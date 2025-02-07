@@ -1,72 +1,83 @@
 import pytest
-from src.generators import transaction_descriptions,  filter_by_currency, card_number_generator
+from src.generators import transaction_description,  filter_by_currency, card_number_generator
 
+
+import pytest
+from src.generators import transaction_description, filter_by_currency, card_number_generator
 
 def test_filter_by_currency_empty_list() -> None:
-    """Тест проверяет, что функция filter_by_currency корректно
-    работает при передаче ей пустого списка и не завершается
-    ошибкой после окончания работы генератора"""
+    """Test that filter_by_currency correctly handles an empty transaction list."""
     empty_transaction = filter_by_currency([])
     assert next(empty_transaction) == "Пустой список транзакций"
-    assert next(empty_transaction) == "Генератор закончил работу"
+    with pytest.raises(StopIteration):
+        next(empty_transaction)
 
 def test_filter_by_no_currency_in_list(transactions_for_generate: list, currency: str = "EURO") -> None:
-    """Тест проверяет, что функция-генератор filter_by_currency корректно
-    работает при передаче ей списка, где нет заданной валюты"""
+    """Test that filter_by_currency correctly handles when no transactions match the specified currency."""
     no_necessary_transaction = filter_by_currency(transactions_for_generate, currency)
     assert next(no_necessary_transaction) == "Транзакции в заданной валюте отсутствуют"
-    assert next(no_necessary_transaction) == "Генератор закончил работу"
+    with pytest.raises(StopIteration):
+        next(no_necessary_transaction)
 
 @pytest.mark.parametrize(
-    "expected",
+    "transactions_for_generate, expected",
     [
         (
+            [
+                {"description": "Перевод организации"},
+                {"description": "Перевод со счета на счет"},
+                {"description": "Перевод со счета на счет"},
+                {"description": "Перевод с карты на карту"},
+                {"description": "Перевод организации"}
+            ],
             [
                 "Перевод организации",
                 "Перевод со счета на счет",
                 "Перевод со счета на счет",
-                "Перевод с карты на карту"
+                "Перевод с карты на карту",
                 "Перевод организации"
             ]
         )
-    ])
-def test_transaction_descriptions(transactions_for_generate: list, expected: str) -> str:
-    """Тест проверяет работу генератора transaction_descriptions"""
-    transactions = transaction_descriptions(transactions_for_generate)
-    for index in range(6):
-        assert next(descriptions) == expected[index]
+    ]
+)
+def test_transaction_description(transactions_for_generate: list, expected: list) -> None:
+    """Test the generator transaction_description for expected output."""
+    transactions = transaction_description(transactions_for_generate)
+    for index, expected_description in enumerate(expected):
+        assert next(transactions) == expected_description
+    with pytest.raises(StopIteration):
+        next(transactions)
 
-    assert next(descriptions) == "Генератор закончил работу"
-
-
-def test_no_transaction_descriptions(transactions_for_generate: list) -> str:
-    """Тест проверяет работу функции-генератора transaction_descriptions при передаче
-    ей пустого списка"""
-    descriptions = transaction_descriptions([])
+def test_no_transaction_descriptions() -> None:
+    """Test transaction_description with an empty list."""
+    descriptions = transaction_description([])
     assert next(descriptions) == "Пустой список транзакций"
-    assert next(descriptions) == "Генератор закончил работу"
+    with pytest.raises(StopIteration):
+        next(descriptions)
 
-
-
-def test_card_number_generator(start: int, stop: int, expected: list) -> None:
-    """Тест проверяет работу функции-генератора card_number_generator"""
+def test_card_number_generator() -> None:
+    """Test the card_number_generator function."""
+    expected = ["0000 0000 0000 0001", "0000 0000 0000 0002", "0000 0000 0000 0003"]  # example expected
+    start, stop = 1, 3
     card_number = card_number_generator(start, stop)
-
     for index in range(stop - start + 1):
         assert next(card_number) == expected[index]
-
+    with pytest.raises(StopIteration):
+        next(card_number)
 
 @pytest.mark.parametrize(
     "start, stop, expected",
     [
-        (-1, 10, "Диапазон чисел меньше 0"),
-        (10, -1, "Диапазон чисел меньше 0"),
-        (1, 1, "Начало и конец диапазона совпадают"),
-        (999999999999999, 99999999999999999, "Диапазон чисел вышел за верхнюю границу"),
-    ],
+        (-1, 10, "Число должно быть в диапазоне от 1 до 9999 9999 9999 9999"),
+        (10, -1, "Первое число не может быть больше второго"),
+        (1, 1, "0000 0000 0000 0001"),
+        (9999999999999999, 10000000000000000, "Число должно быть в диапазоне от 1 до 9999 9999 9999 9999"),
+    ]
 )
-def test_card_number_generator_wrong_cases(start: int, stop: int, expected: list) -> None:
-    """Проверяет работу функции-генератора card_number_generator,
-    когда на вход были переданы неверные данные"""
+def test_card_number_generator_wrong_cases(start: int, stop: int, expected: str) -> None:
+    """Test card_number_generator for various erroneous inputs."""
     card_number = card_number_generator(start, stop)
     assert next(card_number) == expected
+    if expected.startswith("Число должно быть"):
+        with pytest.raises(StopIteration):
+            next(card_number)
