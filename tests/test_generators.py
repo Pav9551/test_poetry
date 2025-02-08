@@ -1,10 +1,11 @@
 import pytest
-from src.generators import transaction_description,  filter_by_currency, card_number_generator
-
-
-import pytest
 from src.generators import transaction_description, filter_by_currency, card_number_generator
-
+@pytest.fixture
+def transactions_for_generate():
+    return [
+        {"amount": 100, "currency": "USD", "description": "Перевод"},
+        {"amount": 200, "currency": "RUB", "description": "Оплата"},
+    ]
 def test_filter_by_currency_empty_list() -> None:
     """Test that filter_by_currency correctly handles an empty transaction list."""
     empty_transaction = filter_by_currency([])
