@@ -1,6 +1,5 @@
 from gettext import translation
 from typing import Any, Iterator
-
 # Исправленный список транзакций
 transactions_list = [
     {
@@ -60,15 +59,22 @@ def transaction_description(transactions_list: list) -> Iterator[str]:
     for transaction in transactions_list:
         yield transaction["description"]
 
+
+
 def card_number_generator(start: int, stop: int) -> Iterator[str]:
     """Генерирует номера карт в заданном диапазоне"""
-    if not (1 <= start <= 9999999999999999 and 1 <= stop <= 9999999999999999):
-        yield "Число должно быть в диапазоне от 1 до 9999 9999 9999 9999"
-        return
+
+    # Проверяем, что start не больше stop
     if start > stop:
         yield "Первое число не может быть больше второго"
         return
 
+    # Проверяем, что числа в допустимом диапазоне
+    if not (1 <= start <= 9999999999999999 and 1 <= stop <= 9999999999999999):
+        yield "Число должно быть в диапазоне от 1 до 9999 9999 9999 9999"
+        return
+
+    # Генерация номеров карт
     while start <= stop:
         card_number = str(start).zfill(16)  # Добавляем ведущие нули
         formatted_card_number = " ".join([card_number[i:i+4] for i in range(0, 16, 4)])
