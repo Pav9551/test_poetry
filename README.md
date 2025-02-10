@@ -14,3 +14,9 @@ poetry add --dev pytest
 ### Тестирование
 Проект покрыт тестами. Для их запуска выполните команду:
 poetry run pytest tests
+Поктытие:
+Установите необходимые зависимости:
+poetry add --dev pytest coverage
+poetry run coverage run -m pytest
+poetry run coverage html
+
