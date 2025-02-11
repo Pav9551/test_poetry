@@ -17,8 +17,8 @@ git clone https://github.com/Pav9551/test_poetry
 2. Перейдите в директорию проекта:
 cd test_poetry
 3. Установите необходимые зависимости:
-poetry add --dev pytest 
-poetry add --dev pytest coverage
+- poetry add --dev pytest 
+- poetry add --dev pytest coverage
 ## Использование
 1. Откройте приложение в вашем веб-браузере.
 2. Создайте новый проект и начните добавлять задачи.
