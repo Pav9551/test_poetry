@@ -1,7 +1,7 @@
 # Проект Домашнее задание "Продвинутый Git"
 ## Описание: Виджет банковских операций клиента. Позволяет извлекать выбранные данные из приложения и отображает их на экране
 ### Установка poetry:
-1. cd C:\Users\pavel\AppData\Local\Programs\Python\Python313
+1. cd C:\Users\user\AppData\Local\Programs\Python\Python313
 2. python -m ensurepip
 3. python -m pip install --upgrade certifi
 4. (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
