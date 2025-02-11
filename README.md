@@ -10,7 +10,7 @@
 6. The installer installs the poetry tool to Poetry's bin directory. This location depends on your system:
 $HOME/.local/bin for Unix
 %APPDATA%\Python\Scripts on Windows
-7. C:/Users/pavel/AppData/Roaming/pypoetry/venv/Scripts/poetry.exe
+7. ~/AppData/Roaming/pypoetry/venv/Scripts/poetry.exe
 ### Установка
 1. Клонируйте репозиторий:
 git clone https://github.com/Pav9551/test_poetry
