@@ -7,6 +7,7 @@ git clone https://github.com/Pav9551/test_poetry
 cd test_poetry
 3. Установите необходимые зависимости:
 poetry add --dev pytest 
+poetry add --dev pytest coverage
 ## Использование
 1. Откройте приложение в вашем веб-браузере.
 2. Создайте новый проект и начните добавлять задачи.
@@ -15,8 +16,6 @@ poetry add --dev pytest
 Проект покрыт тестами. Для их запуска выполните команду:
 poetry run pytest tests
 Поктытие:
-Установите необходимые зависимости:
-poetry add --dev pytest coverage
 poetry run coverage run -m pytest
 poetry run coverage html
 
